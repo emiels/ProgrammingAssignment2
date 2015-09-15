@@ -1,0 +1,17 @@
+{
+    "contents" : "## Two functions for creating and reading a matrix-inversion. A matrix inversion\n## is, depending on size, potentially a time consuming operation Before \n## calculating an inversion these functions check if the inverted matrix already\n## is calculated. If so we use 'the cached data', if not we calculate and cache \n## the inverted matrix for future use.\n\n## This function creates a special \"matrix\" object that can cache its inverse.\nmakeCacheMatrix <- function(x = matrix()) {\n        m <- NULL #create empty m\n        set <- function(y) { #set the value to the contents of the matrix\n                x <<- y\n                m <<- NULL\n        }\n        get <- function() x #get (read/display) the contents. \n        #if set has been applied, this returns a matrix\n        setinverse <- function(solve) m <<- solve #calculate inverted matrix\n        getinverse <- function() m #read inverted matrix\n        list(set = set, get = get, setinverse = setinverse, getinverse = getinverse)\n}\n\n## This function computes the inverse of the special \"matrix\" returned by \n## `makeCacheMatrix` above. If the inverse has already been calculated (and the \n## matrix has not changed), then `cacheSolve` should retrieve the inverse from \n## the cache. If matrix has changed (i.e. 'makeCacheMatrix was reapplied) a new\n## enviroment is created and a new inverse value has to be calculated.\ncacheSolve <- function(x, ...) {\n        ## Return a matrix that is the inverse of 'x'\n        m <- x$getinverse() #get inverse value from x\n        \n        if(!is.null(m)) { \n                #if inverse value is present, then get cached data\n                message(\"getting cached data\")\n                return(m)\n        } else { \n                #inverse not available, calculate inverse using solve\n                data <- x$get() #get matrix data from x\n                m <- solve(data, ...) \n                x$setinverse(m)\n                m # return inversed matrix (which is in x$setinverse and m)\n        } #end else\n}\n",
+    "created" : 1421577525204.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4029334292",
+    "id" : "59D02DFE",
+    "lastKnownWriteTime" : 1442335447,
+    "path" : "~/GitHub/R-Programming/ProgrammingAssignment2/cachematrix.R",
+    "project_path" : "cachematrix.R",
+    "properties" : {
+    },
+    "relative_order" : 0,
+    "source_on_save" : false,
+    "type" : "r_source"
+}
